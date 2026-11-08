@@ -1,0 +1,9 @@
+{
+  "name": "student-results-management",
+  "version": "1.0.0",
+  "private": true,
+  "description": "نظام console لإدارة وتحليل نتائج الطلاب باستخدام JavaScript",
+  "scripts": {
+    "start": "node index.js"
+  }
+}

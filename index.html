@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="نظام إدارة وتحليل نتائج الطلاب مع تقرير لجنة الرأفة."
+    />
+    <title>نظام نتائج الطلاب</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+        color: #172033;
+        background: #f3f6fb;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        --muted: #64748b;
+        --border: #e5eaf2;
+        --primary: #3659d9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 32px));
+        margin: 48px auto;
+      }
+
+      .hero {
+        margin-bottom: 28px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--primary);
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+        font-size: clamp(1.7rem, 4vw, 2.4rem);
+      }
+
+      .subtitle,
+      .section-description {
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .summary-card,
+      .panel {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 8px 24px rgb(23 32 51 / 4%);
+      }
+
+      .summary-card {
+        padding: 20px 22px;
+      }
+
+      .summary-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .summary-value {
+        color: var(--primary);
+        font-size: 1.75rem;
+        font-weight: 800;
+      }
+
+      .panel {
+        margin-top: 20px;
+        padding: 22px;
+      }
+
+      .panel-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        margin-bottom: 5px;
+        font-size: 1.25rem;
+      }
+
+      .section-description {
+        margin-bottom: 0;
+        font-size: 0.92rem;
+      }
+
+      .count {
+        flex: 0 0 auto;
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: #eef2ff;
+        color: var(--primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      th,
+      td {
+        padding: 13px 14px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      th {
+        background: #f8faff;
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .student-name {
+        font-weight: 700;
+      }
+
+      .grade,
+      .status {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 5px 10px;
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      .grade-A,
+      .grade-B,
+      .status-pass {
+        background: #e9f8ef;
+        color: #187443;
+      }
+
+      .grade-C,
+      .grade-D,
+      .grade-E {
+        background: #fff5df;
+        color: #936000;
+      }
+
+      .grade-F,
+      .status-review {
+        background: #fff0ef;
+        color: #b33a32;
+      }
+
+      .adjusted-average {
+        color: #187443;
+        font-weight: 700;
+      }
+
+      .empty-state {
+        margin: 0;
+        border-radius: 10px;
+        padding: 18px;
+        background: #f8faff;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      footer {
+        padding: 22px 0 8px;
+        color: var(--muted);
+        font-size: 0.85rem;
+        text-align: center;
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          margin: 28px auto;
+        }
+
+        .summary {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .panel {
+          padding: 16px;
+        }
+      }
+    </style>
+    <script src="index.js" defer></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">نظام الإدارة الأكاديمية</p>
+        <h1>نتائج الطلاب</h1>
+        <p class="subtitle">
+          ملخص الدرجات والتقديرات والحضور، مع تحليل حالات لجنة الرأفة.
+        </p>
+      </header>
+
+      <section class="summary" aria-label="ملخص لجنة الرأفة">
+        <article class="summary-card">
+          <span class="summary-label">الطلاب المستفيدون من الرأفة</span>
+          <span class="summary-value" id="mercy-count">—</span>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">متوسطهم بعد إضافة درجات الرأفة</span>
+          <span class="summary-value" id="mercy-average">—</span>
+        </article>
+      </section>
+
+      <section class="panel" aria-labelledby="student-heading">
+        <div class="panel-heading">
+          <div>
+            <h2 id="student-heading">التقرير الأكاديمي</h2>
+            <p class="section-description">
+              النجاح يتطلب متوسطاً لا يقل عن 50% وحضوراً لا يقل عن 75%.
+            </p>
+          </div>
+          <span class="count">جميع الطلاب</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">رقم الجلوس</th>
+                <th scope="col">الاسم</th>
+                <th scope="col">المتوسط</th>
+                <th scope="col">التقدير</th>
+                <th scope="col">النتيجة</th>
+              </tr>
+            </thead>
+            <tbody id="student-report"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="mercy-heading">
+        <div class="panel-heading">
+          <div>
+            <h2 id="mercy-heading">لجنة الرأفة</h2>
+            <p class="section-description">
+              الطلاب الذين يتراوح متوسطهم بين 40 و49 بعد إضافة خمس درجات
+              لمتوسطهم.
+            </p>
+          </div>
+          <span class="count">+٥ درجات</span>
+        </div>
+        <p class="empty-state" id="mercy-empty" hidden>
+          لا يوجد طلاب متعثرون في النطاق المحدد.
+        </p>
+        <div class="table-wrap" id="mercy-table">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">رقم الجلوس</th>
+                <th scope="col">الاسم</th>
+                <th scope="col">قبل الرأفة</th>
+                <th scope="col">بعد الرأفة</th>
+              </tr>
+            </thead>
+            <tbody id="mercy-report"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>مشروع تعليمي باستخدام JavaScript وطرق المصفوفات الحديثة.</footer>
+    </main>
+  </body>
+</html>
